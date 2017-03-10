@@ -1,4 +1,6 @@
 class User < ApplicationRecord
   validates(:name, presence: true, length: { maximum: 50 })
-  validates(:email, presence: true, length: { maximum: 255 })
+  VALID_EMAIL_REGEX = /\A[\w\-.+]+@[a-z\d]+([.\-]{0,1}[a-z\d]+)*\.[a-z]{2,3}\z/i
+  validates(:email, presence: true, length: { maximum: 255 }, 
+                    format: { with: VALID_EMAIL_REGEX })
 end
