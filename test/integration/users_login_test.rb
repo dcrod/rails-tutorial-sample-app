@@ -26,8 +26,10 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_redirected_to @user
     follow_redirect!
     assert_template 'users/show'
+    # Make sure log in link is gone and profile and logout links are present
     assert_select "a[href=?]", login_path, count: 0
     assert_select "a[href=?]", logout_path
     assert_select "a[href=?]", user_path(@user)
+    assert is_logged_in? # Assert session[:user_id] is not nil
   end
 end
