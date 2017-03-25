@@ -35,6 +35,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     delete logout_path
     assert_not is_logged_in?
     assert_redirected_to root_url
+    # Simulate a user clicking 'Log Out' in a second window/tab
+    delete logout_path
     follow_redirect!
     assert_template 'static_pages/home'
     # Make sure log in link is present and profile and logout links are gone

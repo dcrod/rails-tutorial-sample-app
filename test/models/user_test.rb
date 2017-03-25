@@ -75,4 +75,9 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
  
+  test "authenticated? should return false for user with nil remember_digest" do
+    # Since no remember_digest was assigned to @user in setup, 
+    # nil is passed to BCrypt::Password.new
+    assert_not @user.authenticated?('')
+  end
 end
