@@ -2,6 +2,9 @@ class SessionsController < ApplicationController
   def new
   end
   def create
+    # use instance variable (@user) so that it is available in
+    # user login integration test using assigns(:user). This is necessary to 
+    # verify remember_token is stored properly in cookies
     @user = User.find_by(email: params[:session][:email].downcase)
     if @user && @user.authenticate(params[:session][:password])
       log_in @user
@@ -11,7 +14,7 @@ class SessionsController < ApplicationController
         forget @user
       end
       flash[:success] = "Welcome back to the sample app!"
-      redirect_to @user
+      redirect_back_or @user
     else
       flash.now[:danger] = 'Invalid email/password combination provided'
       render 'new'
