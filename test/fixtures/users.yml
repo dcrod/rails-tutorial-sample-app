@@ -18,8 +18,8 @@
   name: Lana Kane
   email: hands@example.com
   password_digest: <%= User.digest('password12') %>
-  activated: true
-  activated_at: <%= Time.zone.now %>
+  activated: false
+  activated_at: <%= nil %>
 
  malory:
   name: Malory Archer
