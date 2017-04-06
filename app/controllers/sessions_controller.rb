@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
       else
         message = "Account not activated. "
         message += "Check your email for activation link."
-        flash.now[:danger] = message
+        flash.now[:warning] = message
         render 'new'
       end
     else

@@ -20,10 +20,6 @@ class UsersController < ApplicationController
       UserMailer.account_activation(@user).deliver_now
       flash[:info] = "Please check your email to activate your account."
       redirect_to root_url
-      # Pre-account_activation implementation
-      # log_in @user
-      # flash[:success] = "Welcome to the Sample App"
-      # redirect_to @user
     else
       # Handle unsuccessful save
       render 'new'
