@@ -7,14 +7,21 @@ class SessionsController < ApplicationController
     # verify remember_token is stored properly in cookies
     @user = User.find_by(email: params[:session][:email].downcase)
     if @user && @user.authenticate(params[:session][:password])
-      log_in @user
-      if (params[:session][:remember_me] == '1')
-        remember @user
+      if @user.activated?
+        log_in @user
+        if (params[:session][:remember_me] == '1')
+          remember @user
+        else
+          forget @user
+        end
+        flash[:success] = "Welcome back to the sample app!"
+        redirect_back_or @user
       else
-        forget @user
+        message = "Account not activated. "
+        message += "Check your email for activation link."
+        flash.now[:danger] = message
+        render 'new'
       end
-      flash[:success] = "Welcome back to the sample app!"
-      redirect_back_or @user
     else
       flash.now[:danger] = 'Invalid email/password combination provided'
       render 'new'
