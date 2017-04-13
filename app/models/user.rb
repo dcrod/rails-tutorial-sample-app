@@ -65,17 +65,22 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
   
+  # Returns true if password reset has expired
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
+  end
+  
   private
   
-  # Converts email to lower-case
-  def downcase_email
-    email.downcase!
-  end
-  
-  # Creates and assigns activation token and digest
-  def create_activation_digest
-    self.activation_token = User.new_token
-    self.activation_digest = User.digest(activation_token)
-  end
-  
+    # Converts email to lower-case
+    def downcase_email
+      email.downcase!
+    end
+    
+    # Creates and assigns activation token and digest
+    def create_activation_digest
+      self.activation_token = User.new_token
+      self.activation_digest = User.digest(activation_token)
+    end
+
 end
