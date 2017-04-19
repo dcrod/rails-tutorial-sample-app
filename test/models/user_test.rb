@@ -80,4 +80,12 @@ class UserTest < ActiveSupport::TestCase
     # nil is passed to BCrypt::Password.new
     assert_not @user.authenticated?(:remember, '')
   end
+  
+  test "associated microposts should be destroyed when user is destroyed" do
+    @user.save
+    @user.microposts.create!(content: "Lorem ipsum")
+    assert_difference 'Micropost.count', -1 do
+      @user.destroy
+    end
+  end
 end
