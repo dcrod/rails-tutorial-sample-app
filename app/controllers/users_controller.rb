@@ -48,29 +48,23 @@ class UsersController < ApplicationController
   end
   
   private
-  # strong params
-  def user_params
-    params.require(:user).permit(:name, :email, :password,
-                                 :password_confirmation)
-  end
   
-  # Confirms a logged-in user
-  def logged_in_user
-    unless logged_in?
-      store_location
-      flash[:danger] = "Please log in"
-      redirect_to login_url
+    # strong params
+    def user_params
+      params.require(:user).permit(:name, :email, :password,
+                                   :password_confirmation)
     end
-  end
-  
-  # Confirms the correct user
-  def correct_user
-    @user = User.find(params[:id])
-    redirect_to root_url unless current_user?(@user)
-  end
-  
-  # Confirms user is an admin
-  def admin_user
-    redirect_to root_url unless current_user.admin?
-  end
+    
+    # Before filters
+    
+    # Confirms the correct user
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to root_url unless current_user?(@user)
+    end
+    
+    # Confirms user is an admin
+    def admin_user
+      redirect_to root_url unless current_user.admin?
+    end
 end
