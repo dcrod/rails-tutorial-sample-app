@@ -24,7 +24,7 @@ class MicropostsController < ApplicationController
   
     # Strong params
     def micropost_params
-      params.require(:micropost).permit(:content)
+      params.require(:micropost).permit(:content, :picture)
     end
     
     # Confirms correct user
