@@ -9,22 +9,26 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
   test "micropost interface" do
     log_in_as(@user)
     get root_path
-    # Check Pagination
+    # Check pagination and image upload form element
     assert_select 'div.pagination'
-    # Invalid Submission
+    assert_select 'input[type="file"]'
+    # Invalid submission
     assert_no_difference 'Micropost.count' do
       post microposts_path, params: { micropost: { content: "" } }
     end
     assert_select 'div#error_explanation'
-    # Valid Submission
+    # Valid submission
     valid_content = "This is valid micropost content"
+    picture = fixture_file_upload('test/fixtures/rails.png', 'image/png')
     assert_difference 'Micropost.count', 1 do
-      post microposts_path, params: { micropost: { content: valid_content } }
+      post microposts_path, params: { micropost: { content: valid_content, 
+                                                   picture: picture } }
     end
+    assert assigns(:micropost).picture?
     assert_redirected_to root_url
     follow_redirect!
     assert_match valid_content, response.body
-    # Delete Post
+    # Delete post
     assert_select 'a', text: 'delete'
     first_micropost = @user.microposts.paginate(page: 1).first
     assert_difference 'Micropost.count', -1 do
